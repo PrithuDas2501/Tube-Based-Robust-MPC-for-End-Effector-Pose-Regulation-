@@ -1,4 +1,3 @@
-# Tube-Based-Robust-MPC-for-End-Effector-Pose-Regulation-
 # Tube-Based Robust MPC for End-Effector Pose Regulation
 
 Robust convex tube MPC for holding the end-effector of a 7-DOF Franka Emika Panda still while its base is being shaken. Built as a course project at UIUC.
