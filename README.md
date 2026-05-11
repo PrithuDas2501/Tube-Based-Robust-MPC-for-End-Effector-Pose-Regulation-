@@ -1,8 +1,8 @@
 # Tube-Based Robust MPC for End-Effector Pose Regulation
 
-Robust convex tube MPC for holding the end-effector of a 7-DOF Franka Emika Panda still while its base is being shaken. Built as a course project at UIUC.
+Robust convex tube MPC for holding the end-effector of a 7-DOF Franka Emika Panda still while its base is being shaken. Built as a course project for AE598: Advanced Robotic Planning at the Department of Aerospace Engineering at UIUC.
 
-The arm–base coupling is treated as a bounded additive joint-acceleration disturbance, the prediction model is the feedback-linearized double integrator, and the MPC is a second-order cone program that jointly optimizes the nominal trajectory and the ellipsoidal tube radius. The implementation extends the convex tube MPC of [Wullt et al., 2025](https://arxiv.org/abs/2508.21677) to the mobile-base setting and benchmarks it against three baselines.
+The arm–base coupling is treated as a bounded additive joint-acceleration disturbance, the prediction model is the feedback-linearized double integrator, and the MPC is a second-order cone program that jointly optimizes the nominal trajectory and the ellipsoidal tube radius.
 
 ## Headline result
 
@@ -82,17 +82,7 @@ A longer description of the method, the simulation setup, and the discussion of 
 
 ## Notes and limitations
 
-- The Panda URDF used here is **fixed-base**, so the base coupling is injected via a virtual channel ($J_v^{\#}$ of the planar base acceleration). The MPC sees this as a bounded joint-acceleration disturbance; behavior is therefore representative of the physical case but not identical. Substituting the true $-M_{aa}^{-1} M_{ab} \ddot q_b$ requires a mobile-base URDF and a one-line change in `VirtualPlanarBaseDisturbance.joint_accel_disturbance`.
+- The Panda URDF used here is **fixed-base**, so the base coupling is injected via a virtual channel of the planar base acceleration. The MPC sees this as a bounded joint-acceleration disturbance; behavior is therefore representative of the physical case but not identical. Substituting the true $-M_{aa}^{-1} M_{ab} \ddot q_b$ requires a mobile-base URDF and a one-line change in `VirtualPlanarBaseDisturbance.joint_accel_disturbance`.
 - The disturbance Lipschitz constant $L_\beta$ in the tube recursion is currently absorbed into $\rho$ rather than computed offline, which is conservative.
 - The MPC's auxiliary feedback gain $K$ is set to the discrete LQR gain for $(A, B, Q, R)$ rather than synthesised via an LMI; this is sufficient for the constraint-tightening here but a formal LMI synthesis would give a tighter $P$ and a less conservative invariant set.
 
-## References
-
-- B. Wullt, J. Köhler, P. Mattsson, M. Norrlöf, T. B. Schön. *Robust convex model predictive control with collision avoidance guarantees for robot manipulators.* arXiv:2508.21677, 2025.
-- D. Q. Mayne, M. M. Seron, S. V. Raković. *Robust model predictive control of constrained linear systems with bounded disturbances.* Automatica, 41(2):219–224, 2005.
-- J. Carpentier et al. *The Pinocchio C++ library.* IEEE/SII, 2019.
-- S. Diamond, S. Boyd. *CVXPY: A Python-embedded modeling language for convex optimization.* JMLR, 2016.
-
-## Acknowledgments
-
-Course project, UIUC. Claude (Anthropic) was used to help organize the structure of the project report, suggest tables, and grammar-check.
